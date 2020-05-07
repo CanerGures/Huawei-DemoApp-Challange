@@ -7,6 +7,11 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -14,6 +19,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,21 +29,64 @@ class MainActivity : AppCompatActivity() {
     lateinit var gso: GoogleSignInOptions
     lateinit var signOut: Button
     val RC_SIGN_IN: Int = 1
+    var firebaseAuth: FirebaseAuth? = null
+    var callbackManager: CallbackManager? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
+
         val signIn = findViewById<View>(R.id.signInButton) as SignInButton
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         signOut = findViewById<View>(R.id.signOutButton) as Button
         signOut.visibility = View.INVISIBLE
+
         signIn.setOnClickListener { v: View? ->
             signInGoogle()
         }
 
+        firebaseAuth = FirebaseAuth.getInstance()
+        callbackManager = CallbackManager.Factory.create()
+
+        login_button.setPermissions("email")
+        login_button.setOnClickListener {
+            fbSignIn()
+        }
+
+    }
+
+    private fun fbSignIn() {
+        login_button.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult?) {
+                handleFacebookAccessToken(result!!.accessToken)
+            }
+
+            override fun onCancel() {
+
+            }
+
+            override fun onError(error: FacebookException?) {
+
+            }
+
+        })
+    }
+
+    private fun handleFacebookAccessToken(accessToken: AccessToken?) {
+        val credential = FacebookAuthProvider.getCredential(accessToken!!.token)
+        firebaseAuth!!.signInWithCredential(credential)
+            .addOnFailureListener { e ->
+                Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+            }.addOnSuccessListener { result ->
+                val email = result.user?.email
+                Toast.makeText(this, "You Logged with:$email", Toast.LENGTH_LONG).show()
+            }
     }
 
     private fun signInGoogle() {
@@ -49,6 +100,7 @@ class MainActivity : AppCompatActivity() {
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleResult(task)
         }
+        callbackManager!!.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
