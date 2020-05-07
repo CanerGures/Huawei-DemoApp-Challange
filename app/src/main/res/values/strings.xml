@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">huaweiChallange</string>
+    <string name="facebook_app_id">238011257296775</string>
+    <string name="fb_login_protocol_scheme">fb238011257296775</string>
+</resources>

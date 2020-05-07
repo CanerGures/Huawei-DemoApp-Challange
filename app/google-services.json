@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "443884100591",
+    "firebase_url": "https://huawei-challange.firebaseio.com",
+    "project_id": "huawei-challange",
+    "storage_bucket": "huawei-challange.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443884100591:android:574374b76cdad80e76741a",
+        "android_client_info": {
+          "package_name": "com.example.huaweichallange"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443884100591-la8d6mreotpgelnoefj348l4ulm87he9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.huaweichallange",
+            "certificate_hash": "bdc9997edbfcfaabc7fa2b5bfc5cee455a185092"
+          }
+        },
+        {
+          "client_id": "443884100591-fud4htcciao5l19lsrb4s35vj3piksj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuMuKTqjGBIISkB0MtbFyZQUyc4Cl_Nnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443884100591-fud4htcciao5l19lsrb4s35vj3piksj7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
