@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         login_button.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
                 handleFacebookAccessToken(result!!.accessToken)
+
             }
 
             override fun onCancel() {
@@ -87,12 +88,16 @@ class MainActivity : AppCompatActivity() {
             }.addOnSuccessListener { result ->
                 val email = result.user?.email
                 Toast.makeText(this, "You Logged with:$email", Toast.LENGTH_LONG).show()
+                val intent = Intent(this, TabbedActivity::class.java)
+                startActivity(intent)
             }
     }
 
     private fun signInGoogle() {
         val signIntent: Intent = mGoogleSignInClient.signInIntent
         startActivityForResult(signIntent, RC_SIGN_IN)
+        val intent = Intent(this, TabbedActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -126,4 +131,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
 }
