@@ -4,7 +4,7 @@
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
-    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=BD:C9:99:7E:DB:FC:FA:AB:C7:FA:2B:5B:FC:5C:EE:45:5A:18:50:92%3Bcom.example.huaweichallange.ui
+   
 
     You can also add your credentials to an existing key, using these values:
 
@@ -12,7 +12,7 @@
     com.example.huaweichallange.ui
 
     SHA-1 certificate fingerprint:
-    BD:C9:99:7E:DB:FC:FA:AB:C7:FA:2B:5B:FC:5C:EE:45:5A:18:50:92
+    KEY
 
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key
