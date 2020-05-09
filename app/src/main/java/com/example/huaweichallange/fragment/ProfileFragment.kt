@@ -11,13 +11,19 @@ import com.example.huaweichallange.R
  * A simple [Fragment] subclass.
  */
 class ProfileFragment : Fragment() {
-
+    //val photo = arguments?.getString("photo")
+    val name = arguments?.getString("name")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
+
+
+        // Picasso.get()
+        //   .load(photo)
+        //  .into(personPhoto);
     }
 
 }

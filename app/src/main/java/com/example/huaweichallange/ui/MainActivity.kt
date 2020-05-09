@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.huaweichallange.R
+import com.example.huaweichallange.model.UserInfoModel
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.Serializable
 
 
 class MainActivity : AppCompatActivity() {
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             fbSignIn()
         }
 
+
     }
 
     private fun fbSignIn() {
@@ -90,24 +93,57 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "You Logged with:$email", Toast.LENGTH_LONG).show()
                 val intent = Intent(this, TabbedActivity::class.java)
                 startActivity(intent)
+
             }
     }
 
     private fun signInGoogle() {
         val signIntent: Intent = mGoogleSignInClient.signInIntent
         startActivityForResult(signIntent, RC_SIGN_IN)
-        val intent = Intent(this, TabbedActivity::class.java)
-        startActivity(intent)
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+
             handleResult(task)
         }
+
+        val Object = UserInfoModel()
+        val acct = GoogleSignIn.getLastSignedInAccount(this)
+        if (acct != null) {
+            Object.personName = acct.displayName
+            Object.personGivenName = acct.givenName
+            Object.familyName = acct.familyName
+            Object.personEmail = acct.email
+            Object.personId = acct.id
+            Object.personPhoto = acct.photoUrl.toString()
+        }
         callbackManager!!.onActivityResult(requestCode, resultCode, data)
+
+        val intent = Intent(this, TabbedActivity::class.java)
+        intent.putExtra("extra", Object as Serializable)
+        startActivity(intent)
+
+
+        //getUserInfo()
+
     }
+
+    /*private fun getUserInfo() {
+        val acct = GoogleSignIn.getLastSignedInAccount(getActivity())
+        if (acct != null) {
+            val personName = acct.displayName
+            val personGivenName = acct.givenName
+            val personFamilyName = acct.familyName
+            val personEmail = acct.email
+            val personId = acct.id
+            val personPhoto: Uri? = acct.photoUrl
+        }
+    }*/
 
     private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
         try {

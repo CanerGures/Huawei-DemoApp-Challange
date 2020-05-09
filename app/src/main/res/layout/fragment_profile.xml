@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/profileFragment"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
     tools:context=".fragment.ProfileFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,16 +15,19 @@
         android:layout_marginLeft="96dp"
         android:layout_marginTop="96dp"
         android:layout_marginRight="96dp"
-        android:layout_marginBottom="128dp"
+
         android:src="@drawable/ic_person"
         app:civ_border_color="@color/colorAccent"
+        android:layout_weight="1"
         app:civ_border_width="2dp" />
 
     <TextView
         android:id="@+id/personName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="asdasdas"
-        android:textSize="35dp" />
+        android:layout_gravity="center"
+        android:layout_marginBottom="200dp"
+        android:text="John Doe"
+        android:textSize="35sp" />
 
-</FrameLayout>
+</LinearLayout>

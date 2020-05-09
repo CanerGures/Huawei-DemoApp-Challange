@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/content_id"
     tools:context=".ui.TabbedActivity">
 
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomApp"
         android:layout_width="match_parent"
@@ -15,6 +20,7 @@
         app:navigationIcon="@drawable/ic_person" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatButto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_map_"
@@ -23,35 +29,10 @@
         app:maxImageSize="25dp"
         app:tint="@color/colorPrimary" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
+        android:id="@+id/floatButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_map_"
-        app:backgroundTint="@color/colorAccent"
-        app:layout_anchor="@id/bottomApp"
-        app:maxImageSize="25dp"
-        app:tint="@color/colorPrimary" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_map_"
-        app:backgroundTint="@color/colorAccent"
-        app:layout_anchor="@id/bottomApp"
-        app:layout_anchorGravity="right"
-        app:maxImageSize="25dp"
-        app:tint="@color/colorPrimary" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
