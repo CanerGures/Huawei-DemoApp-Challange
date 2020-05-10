@@ -4,12 +4,14 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -172,6 +174,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
         mMap = googleMap
 
         mMap!!.uiSettings.isZoomControlsEnabled = true
+      if(true){
+          useDarkMode(googleMap)
+      }
+        else{
+
+      }
 
         if (fusedLocationProviderClient != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -189,6 +197,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
 
 
     }
+
+    private fun useDarkMode(googleMap: GoogleMap) {
+        try {
+            val success : Boolean = googleMap.setMapStyle(MapStyleOptions.
+            loadRawResourceStyle(this,R.raw.map_style))
+        }
+        catch (e: Resources.NotFoundException){
+            Log.e("MapActivity","Map Style Cannot found")
+        }
+    }
+
 
     override fun onLocationLoadSuccess(latLng: List<MyLatlng>) {
         dangerousArea = ArrayList()

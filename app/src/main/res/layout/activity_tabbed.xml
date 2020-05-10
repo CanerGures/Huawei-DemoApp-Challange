@@ -17,7 +17,7 @@
         android:layout_gravity="bottom"
         android:backgroundTint="@color/colorPrimary"
         app:menu="@menu/app_bar_menu"
-        app:navigationIcon="@drawable/ic_person" />
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatButto"
@@ -29,10 +29,6 @@
         app:maxImageSize="25dp"
         app:tint="@color/colorPrimary" />
 
-    <Button
-        android:id="@+id/floatButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
