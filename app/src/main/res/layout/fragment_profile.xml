@@ -7,7 +7,14 @@
     android:background="@color/colorBackground"
     android:orientation="vertical"
     tools:context=".fragment.ProfileFragment">
-
+    <Switch
+        android:id="@+id/switch_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Map Dark Mode  "
+        android:layout_gravity="top|right"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="32dp"/>
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/personPhoto"
         android:layout_width="match_parent"
@@ -29,6 +36,8 @@
         android:layout_marginBottom="200dp"
         android:text="John Doe"
         android:textSize="35sp" />
+
+
 
 
 </LinearLayout>
