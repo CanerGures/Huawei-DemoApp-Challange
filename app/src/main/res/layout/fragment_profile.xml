@@ -22,7 +22,7 @@
         app:civ_border_width="2dp" />
 
     <TextView
-        android:id="@+id/personName"
+        android:id="@+id/personname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
