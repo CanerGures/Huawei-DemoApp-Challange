@@ -4,16 +4,15 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -25,6 +24,8 @@ import com.firebase.geofire.GeoFire
 import com.firebase.geofire.GeoLocation
 import com.firebase.geofire.GeoQuery
 import com.firebase.geofire.GeoQueryEventListener
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -42,7 +43,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationListener,
-    GeoQueryEventListener {
+    GeoQueryEventListener, GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener,
+    com.google.android.gms.location.LocationListener {
 
     private var mMap: GoogleMap? = null
     private lateinit var locationRequest: LocationRequest
@@ -57,6 +60,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
     private lateinit var lastLocation: Location
     private var geoQuery: GeoQuery? = null
     private lateinit var geoFire: GeoFire
+    private lateinit var locationManager: LocationManager
+    private lateinit var latLng: LatLng
+    private lateinit var locationListener: LocationListener
+    private lateinit var mLocation : Location
+    private lateinit var mGoogleApiClient : GoogleApiClient
+    private var UPDATE_INTERVAL: Long = 2000
+    private var FASTEST_INTERVAL: Long = 5000
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -181,25 +191,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
 
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         mMap!!.uiSettings.isZoomControlsEnabled = true
-      if(true){
+     /* if(true){
           useDarkMode(googleMap)
       }
         else{
 
-      }
+      }*/
 
         if (fusedLocationProviderClient != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -218,7 +219,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
 
     }
 
-    private fun useDarkMode(googleMap: GoogleMap) {
+   /* private fun useDarkMode(googleMap: GoogleMap) {
         try {
             val success : Boolean = googleMap.setMapStyle(MapStyleOptions.
             loadRawResourceStyle(this,R.raw.map_style))
@@ -226,7 +227,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
         catch (e: Resources.NotFoundException){
             Log.e("MapActivity","Map Style Cannot found")
         }
-    }
+    }*/
 
 
     override fun onLocationLoadSuccess(latLng: List<MyLatlng>) {
@@ -325,5 +326,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
 
     override fun onGeoQueryError(error: DatabaseError?) {
         Toast.makeText(this, "" + error!!.message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onConnected(p0: Bundle?) {
+
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+
+    }
+
+    override fun onLocationChanged(location: Location?) {
+        val msg : String = "Updated Location: " + location!!.latitude+","+ location.longitude
+        Toast.makeText(this@MapsActivity, msg.toDouble().toString(), Toast.LENGTH_SHORT).show()
+        val msgg :String = "Go back to your original posisiton"
+        Toast.makeText(this@MapsActivity, msgg.toString(), Toast.LENGTH_SHORT).show()
+
+
+        latLng = LatLng((location.latitude), location.longitude)
+
+        val mapFragment : SupportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
     }
 }

@@ -48,10 +48,6 @@ class TabbedActivity : AppCompatActivity() {
             val acct = GoogleSignIn.getLastSignedInAccount(this)
             if (acct != null) {
                 userObject.personName = acct.displayName
-                userObject.personGivenName = acct.givenName
-                userObject.familyName = acct.familyName
-                userObject.personEmail = acct.email
-                userObject.personId = acct.id
                 userObject.personPhoto = acct.photoUrl.toString()
             }
 

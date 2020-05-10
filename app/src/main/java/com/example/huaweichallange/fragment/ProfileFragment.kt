@@ -22,6 +22,8 @@ class ProfileFragment : Fragment() {
         Picasso.get().load(photo).into(rootView.personPhoto)
         rootView.personname.text = name
 
+
+
         return rootView
     }
 

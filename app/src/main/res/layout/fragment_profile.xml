@@ -30,4 +30,5 @@
         android:text="John Doe"
         android:textSize="35sp" />
 
+
 </LinearLayout>

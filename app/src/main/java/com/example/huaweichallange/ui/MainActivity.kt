@@ -90,10 +90,16 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
             }.addOnSuccessListener { result ->
-                val email = result.user?.email
-                Toast.makeText(this, "You Logged with:$email", Toast.LENGTH_LONG).show()
-                val intent = Intent(this, TabbedActivity::class.java)
-                startActivity(intent)
+                val userObject = UserInfoModel()
+                userObject.personName = result.user?.displayName
+                userObject.personPhoto = result.user?.photoUrl.toString()
+                if (credential != null){
+                    val intent = Intent(this, TabbedActivity::class.java)
+                    intent.putExtra("extra", userObject as Serializable)
+                    startActivity(intent)
+                }else{
+                    Toast.makeText(this,"Something went wrong with logging in!", Toast.LENGTH_LONG).show()
+                }
 
             }
     }
@@ -117,10 +123,6 @@ class MainActivity : AppCompatActivity() {
         val acct = GoogleSignIn.getLastSignedInAccount(this)
         if (acct != null) {
             userObject.personName = acct.displayName
-            userObject.personGivenName = acct.givenName
-            userObject.familyName = acct.familyName
-            userObject.personEmail = acct.email
-            userObject.personId = acct.id
             userObject.personPhoto = acct.photoUrl.toString()
         }
         callbackManager!!.onActivityResult(requestCode, resultCode, data)
@@ -130,21 +132,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
 
 
-        //getUserInfo()
+
 
     }
 
-    /*private fun getUserInfo() {
-        val acct = GoogleSignIn.getLastSignedInAccount(getActivity())
-        if (acct != null) {
-            val personName = acct.displayName
-            val personGivenName = acct.givenName
-            val personFamilyName = acct.familyName
-            val personEmail = acct.email
-            val personId = acct.id
-            val personPhoto: Uri? = acct.photoUrl
-        }
-    }*/
+
 
     private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
         try {
