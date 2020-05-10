@@ -5,8 +5,10 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import com.example.huaweichallange.R
+import com.example.huaweichallange.model.UserInfoModel
 import com.example.huaweichallange.util.IOnLoadLocationListener
 import com.example.huaweichallange.util.MyLatlng
 import com.firebase.geofire.GeoFire
@@ -34,6 +37,7 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.PermissionListener
+import com.squareup.picasso.Picasso
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -48,7 +52,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
     private lateinit var myLocationRef: DatabaseReference
     private lateinit var dangerousArea: MutableList<LatLng>
     private lateinit var listener: IOnLoadLocationListener
-
+    private var photoUrl: String? = null
     private lateinit var myCity: DatabaseReference
     private lateinit var lastLocation: Location
     private var geoQuery: GeoQuery? = null
@@ -59,7 +63,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
 
-
+        val personInfo = intent.extras!!.get("extra") as UserInfoModel
+        photoUrl = personInfo.personPhoto
 
 
         Dexter.withActivity(this)
@@ -89,6 +94,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
                     ).show()
                 }
             }).check()
+
 
 
     }
@@ -134,6 +140,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
     }
 
     private fun addUserMarker() {
+
         geoFire.setLocation(
             "You",
             GeoLocation(lastLocation.latitude, lastLocation.longitude)
@@ -145,11 +152,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
                         lastLocation.latitude,
                         lastLocation.longitude
                     )
-                ).title("You").icon(BitmapDescriptorFactory.fromResource(R.mipmap.huawei))
+                ).title("You").icon(BitmapDescriptorFactory.fromBitmap(getBitmap(photoUrl)))
             )
             mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(currentMarker!!.position, 12.0f))
 
         }
+    }
+    fun getBitmap(url : String?) : Bitmap? {
+        var bmp : Bitmap ? = null
+        Picasso.get().load(url).into(object : com.squareup.picasso.Target {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                bmp =  bitmap
+            }
+
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+
+            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+        })
+        return bmp
     }
 
     private fun buildLocationRequest() {

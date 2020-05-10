@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.huaweichallange.R
@@ -48,8 +47,8 @@ class MainActivity : AppCompatActivity() {
 
         val signIn = findViewById<View>(R.id.signInButton) as SignInButton
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        signOut = findViewById<View>(R.id.signOutButton) as Button
-        signOut.visibility = View.INVISIBLE
+
+
 
         signIn.setOnClickListener { v: View? ->
             signInGoogle()
@@ -70,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         login_button.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
                 handleFacebookAccessToken(result!!.accessToken)
+
 
             }
 
@@ -113,20 +113,20 @@ class MainActivity : AppCompatActivity() {
             handleResult(task)
         }
 
-        val Object = UserInfoModel()
+        val userObject = UserInfoModel()
         val acct = GoogleSignIn.getLastSignedInAccount(this)
         if (acct != null) {
-            Object.personName = acct.displayName
-            Object.personGivenName = acct.givenName
-            Object.familyName = acct.familyName
-            Object.personEmail = acct.email
-            Object.personId = acct.id
-            Object.personPhoto = acct.photoUrl.toString()
+            userObject.personName = acct.displayName
+            userObject.personGivenName = acct.givenName
+            userObject.familyName = acct.familyName
+            userObject.personEmail = acct.email
+            userObject.personId = acct.id
+            userObject.personPhoto = acct.photoUrl.toString()
         }
         callbackManager!!.onActivityResult(requestCode, resultCode, data)
 
         val intent = Intent(this, TabbedActivity::class.java)
-        intent.putExtra("extra", Object as Serializable)
+        intent.putExtra("extra", userObject as Serializable)
         startActivity(intent)
 
 
@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity() {
         try {
             val account: GoogleSignInAccount? = completedTask.getResult(ApiException::class.java)
             if (account != null) {
-                updateUI(account)
+                //updateUI(account)
             }
         } catch (e: ApiException) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
@@ -158,12 +158,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI(account: GoogleSignInAccount) {
-        val dispTxt = findViewById<View>(R.id.statusTextView) as TextView
-        dispTxt.text = account.displayName
+
         signOut.visibility = View.VISIBLE
         signOut.setOnClickListener { view: View? ->
             mGoogleSignInClient.signOut().addOnCompleteListener { task: Task<Void> ->
-                dispTxt.text = ""
+
                 signOut.visibility = View.INVISIBLE
             }
         }

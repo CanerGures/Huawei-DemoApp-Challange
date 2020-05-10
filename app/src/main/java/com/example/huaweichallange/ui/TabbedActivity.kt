@@ -12,7 +12,9 @@ import com.example.huaweichallange.R
 import com.example.huaweichallange.fragment.MapFragment
 import com.example.huaweichallange.fragment.ProfileFragment
 import com.example.huaweichallange.model.UserInfoModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.io.Serializable
 
 class TabbedActivity : AppCompatActivity() {
 
@@ -42,7 +44,19 @@ class TabbedActivity : AppCompatActivity() {
         viewPager.adapter = viewPagerAdapter
 
         mapButton!!.setOnClickListener {
+            val userObject = UserInfoModel()
+            val acct = GoogleSignIn.getLastSignedInAccount(this)
+            if (acct != null) {
+                userObject.personName = acct.displayName
+                userObject.personGivenName = acct.givenName
+                userObject.familyName = acct.familyName
+                userObject.personEmail = acct.email
+                userObject.personId = acct.id
+                userObject.personPhoto = acct.photoUrl.toString()
+            }
+
             val intent = Intent(this, MapsActivity::class.java)
+            intent.putExtra("extra", userObject as Serializable)
             startActivity(intent)
         }
 
