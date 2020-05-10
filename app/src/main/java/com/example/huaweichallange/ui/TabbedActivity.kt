@@ -1,5 +1,6 @@
 package com.example.huaweichallange.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -39,6 +40,11 @@ class TabbedActivity : AppCompatActivity() {
         viewPagerAdapter.addFragment(profileFragment, "Profile")
 
         viewPager.adapter = viewPagerAdapter
+
+        mapButton!!.setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+        }
 
 
     }
