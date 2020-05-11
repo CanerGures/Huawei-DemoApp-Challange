@@ -14,7 +14,7 @@ Huawei application task.
 
 
 
-## Used technologies
+## Technologies Used
 - Activity
 - Fragment
 - Viewpager
