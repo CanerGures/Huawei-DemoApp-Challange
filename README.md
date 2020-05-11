@@ -5,8 +5,8 @@ Huawei application task.
 
 ![Alt Text](https://gfycat.com/preciousfreefowl)
 
-##Used technologies
--Activity
+## Used technologies
+- Activity
 -Fragment
 -Viewpager
 -Google Authentication with firebase
