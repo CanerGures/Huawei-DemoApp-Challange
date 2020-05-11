@@ -1,21 +1,21 @@
 # Huawei-DemoApp-Challange
 Huawei application task.
 
-##ScreenShots
+## ScreenShots
 
-![Alt Text](https://gfycat.com/preciousfreefowl)
+![Alt Text](https://gfycat.com/preciousfreefowl.gif)
 
 ## Used technologies
 - Activity
--Fragment
--Viewpager
--Google Authentication with firebase
--FaceBook Authentication
--FloatActionButton
--SharedPreferences
--GoogleMaps
--Data passing with Intent
--Data passing with Bundle
--CardView
--RoundImage
--Firebase
+- Fragment
+- Viewpager
+- Google Authentication with firebase
+- FaceBook Authentication
+- FloatActionButton
+- SharedPreferences
+- GoogleMaps
+- Data passing with Intent
+- Data passing with Bundle
+- CardView
+- RoundImage
+- Firebase
