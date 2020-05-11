@@ -1,29 +1,25 @@
 package com.example.huaweichallange.ui
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import com.example.huaweichallange.R
 import com.example.huaweichallange.model.UserInfoModel
 import com.example.huaweichallange.util.IOnLoadLocationListener
 import com.example.huaweichallange.util.MyLatlng
 import com.firebase.geofire.GeoFire
 import com.firebase.geofire.GeoLocation
 import com.firebase.geofire.GeoQuery
-import com.firebase.geofire.GeoQueryEventListener
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -40,12 +36,11 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.PermissionListener
 import com.squareup.picasso.Picasso
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationListener,
-    GeoQueryEventListener, GoogleApiClient.ConnectionCallbacks,
+     GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener,
-    com.google.android.gms.location.LocationListener {
+    com.google.android.gms.location.LocationListener{
 
     private var mMap: GoogleMap? = null
     private lateinit var locationRequest: LocationRequest
@@ -62,6 +57,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
     private lateinit var geoFire: GeoFire
     private lateinit var locationManager: LocationManager
     private lateinit var latLng: LatLng
+    private lateinit var location: Location
     private lateinit var locationListener: LocationListener
     private lateinit var mLocation : Location
     private lateinit var mGoogleApiClient : GoogleApiClient
@@ -71,7 +67,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
+        setContentView(com.example.huaweichallange.R.layout.activity_maps)
 
         val personInfo = intent.extras!!.get("extra") as UserInfoModel
         photoUrl = personInfo.personPhoto
@@ -185,9 +181,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
     private fun buildLocationRequest() {
         locationRequest = LocationRequest()
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest.interval = 5000
-        locationRequest.fastestInterval = 3000
-        locationRequest.smallestDisplacement = 10f
+        locationRequest.interval = 500
+        locationRequest.fastestInterval = 300
+        locationRequest.smallestDisplacement = 5f
 
     }
 
@@ -195,12 +191,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
         mMap = googleMap
 
         mMap!!.uiSettings.isZoomControlsEnabled = true
-     /* if(true){
-          useDarkMode(googleMap)
-      }
-        else{
 
-      }*/
 
         if (fusedLocationProviderClient != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -211,60 +202,49 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
                 locationRequest,
                 locationCallback,
                 Looper.myLooper()
-            )
 
-            addCircleArea()
+            )
+        }
+       val pref= this@MapsActivity.getSharedPreferences("darkMode", Context.MODE_PRIVATE)
+        val darkMode = pref.getString("darkMode","dark")
+        if(darkMode!=null){
+            useDarkMode(googleMap)
         }
 
 
     }
 
-   /* private fun useDarkMode(googleMap: GoogleMap) {
+    private fun useDarkMode(googleMap: GoogleMap?) {
         try {
-            val success : Boolean = googleMap.setMapStyle(MapStyleOptions.
-            loadRawResourceStyle(this,R.raw.map_style))
+            val success : Boolean = googleMap!!.setMapStyle(
+                MapStyleOptions.
+            loadRawResourceStyle(this, com.example.huaweichallange.R.raw.map_style))
         }
         catch (e: Resources.NotFoundException){
             Log.e("MapActivity","Map Style Cannot found")
         }
-    }*/
+    }
 
 
     override fun onLocationLoadSuccess(latLng: List<MyLatlng>) {
         dangerousArea = ArrayList()
         for (myLatLng in latLng) {
             val convert = LatLng(myLatLng.latitude, myLatLng.longitude)
+
             dangerousArea.add(convert)
         }
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(com.example.huaweichallange.R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         if (mMap != null) {
             mMap!!.clear()
 
             addUserMarker()
-            addCircleArea()
+
         }
+
     }
 
-    private fun addCircleArea() {
-        if (geoQuery != null) {
-            geoQuery!!.removeGeoQueryEventListener(this@MapsActivity)
-            geoQuery!!.removeAllListeners()
-        }
-        for (latLng in dangerousArea) {
-            mMap!!.addCircle(
-                CircleOptions().center(latLng).radius(500.0)
-                    .radius(500.0).strokeColor(Color.BLUE)
-                    .fillColor(0x220000FF)
-                    .strokeWidth(5.0f)
-            )
-
-            geoQuery =
-                geoFire.queryAtLocation(GeoLocation(latLng.latitude, latLng.longitude), 0.5)
-            geoQuery!!.addGeoQueryEventListener(this@MapsActivity)
-        }
-    }
 
     override fun onLocationLoadFailed(message: String) {
         Toast.makeText(this, "" + message, Toast.LENGTH_SHORT).show()
@@ -275,58 +255,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
         super.onStop()
     }
 
-    override fun onGeoQueryReady() {
-
-    }
-
-    override fun onKeyEntered(key: String?, location: GeoLocation?) {
-        sendNotification("caner", String.format("%s entered the dangerous area", key))
-    }
-
-    private fun sendNotification(title: String, content: String) {
-        Toast.makeText(this, "" + content, Toast.LENGTH_SHORT).show()
-
-        val NOTIFICATION_CHANNEL_ID = "caner_multiple_location"
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                "myNotification",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-
-            notificationChannel.description = "Channel Description"
-            notificationChannel.enableLights(true)
-            notificationChannel.lightColor = Color.RED
-            notificationChannel.vibrationPattern = longArrayOf(0, 1000, 500, 1000)
-            notificationChannel.enableVibration(true)
-
-            notificationManager.createNotificationChannel(notificationChannel)
-
-            val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            builder.setContentTitle(title).setContentText(content).setAutoCancel(false)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))
-
-            val notification = builder.build()
-            notificationManager.notify(Random().nextInt(), notification)
-
-
-        }
-    }
-
-    override fun onKeyMoved(key: String?, location: GeoLocation?) {
-        sendNotification("caner", String.format("%s move within the dangerous area", key))
-    }
-
-    override fun onKeyExited(key: String?) {
-        sendNotification("caner", String.format("%s leave the dangerous area", key))
-    }
-
-    override fun onGeoQueryError(error: DatabaseError?) {
-        Toast.makeText(this, "" + error!!.message, Toast.LENGTH_SHORT).show()
-    }
 
     override fun onConnected(p0: Bundle?) {
 
@@ -341,16 +269,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
     }
 
     override fun onLocationChanged(location: Location?) {
-        val msg : String = "Updated Location: " + location!!.latitude+","+ location.longitude
+
+
+        val msg : String = "Updated Location: " + lastLocation!!.longitude+","+ lastLocation!!.latitude
         Toast.makeText(this@MapsActivity, msg.toDouble().toString(), Toast.LENGTH_SHORT).show()
-        val msgg :String = "Go back to your original posisiton"
-        Toast.makeText(this@MapsActivity, msgg.toString(), Toast.LENGTH_SHORT).show()
 
 
-        latLng = LatLng((location.latitude), location.longitude)
+        latLng = LatLng(location!!.latitude, location!!.longitude)
 
-        val mapFragment : SupportMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment : SupportMapFragment = supportFragmentManager.findFragmentById(com.example.huaweichallange.R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
     }
+
 }
