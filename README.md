@@ -12,6 +12,8 @@ Huawei application task.
 ![](https://media.giphy.com/media/j5zmT3OtgBXoqoojFl/giphy.gif)
 ![](https://media.giphy.com/media/XDk4jjyoQ1SMaEQ3kI/giphy.gif)
 
+![](https://media.giphy.com/media/SWVxAcHgR6qlvCVEsx/giphy.gif)
+
 
 
 ## Technologies Used
