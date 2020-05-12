@@ -141,6 +141,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
                     lastLocation = locationResult!!.lastLocation
                     addUserMarker()
                 }
+                val msg : String = "Latitude:${lastLocation!!.latitude}, Longitude:${lastLocation!!.longitude}"
+                Toast.makeText(this@MapsActivity, msg, Toast.LENGTH_SHORT).show()
+
+
             }
         }
     }
@@ -205,10 +209,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
 
             )
         }
-       val pref= this@MapsActivity.getSharedPreferences("darkMode", Context.MODE_PRIVATE)
+        val pref= this@MapsActivity.getSharedPreferences("darkMode", Context.MODE_PRIVATE)
         val darkMode = pref.getString("darkMode","dark")
-        if(darkMode!=null){
+        //val darkMode = getIntent().getExtras()!!.getString("darkMode");
+        if(darkMode == "darkModeOn"){
             useDarkMode(googleMap)
+        }
+        else{
+
         }
 
 
@@ -270,15 +278,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IOnLoadLocationLis
 
     override fun onLocationChanged(location: Location?) {
 
-
-        val msg : String = "Updated Location: " + lastLocation!!.longitude+","+ lastLocation!!.latitude
-        Toast.makeText(this@MapsActivity, msg.toDouble().toString(), Toast.LENGTH_SHORT).show()
-
-
-        latLng = LatLng(location!!.latitude, location!!.longitude)
-
-        val mapFragment : SupportMapFragment = supportFragmentManager.findFragmentById(com.example.huaweichallange.R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
 
     }
 
