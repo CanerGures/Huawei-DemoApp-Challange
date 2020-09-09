@@ -1,5 +1,5 @@
 # Huawei-DemoApp-Challange
-Huawei application task.
+Huawei recruitment process application task.
 
 ## Capabilities:
 1. The Application provides authentication with Gmail and Facebook accounts
