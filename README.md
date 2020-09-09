@@ -1,7 +1,24 @@
 # Huawei-DemoApp-Challange
 Huawei application task.
 
-## ScreenShots
+## Capabilities:
+1. The Application provides authentication with Gmail and Facebook accounts
+
+2. Application has 2 sections in total
+- a. Location Tracking Section 🌎
+- b. Profile Section 👨👩
+- c. Settings Section🔧
+  
+3. After a successful login, the user is redirected for Location Tracking
+
+4. The location tracking section consists of a map and by default current location of the user is displayed
+- a. The marker of the current location is a profile photo of the user fetched from the Gmail account
+- b. The current location of user is tracked live and shown on the map. In addition, coordinates are shown in a dialog while it is changing
+  
+5. The profile section shows the name and profile picture of the user
+6. The map supports 2 styles, dark and light style. User can change styles from the Settings page
+
+## ScreenShots 📱
 ![](https://media.giphy.com/media/eiArUb1VIUFOa7bo5Z/giphy.gif)
 
 ![](https://media.giphy.com/media/ZCGa3BwJEMzrZlVHK2/giphy.gif)
@@ -16,7 +33,7 @@ Huawei application task.
 
 
 
-## Technologies Used
+## Technologies Used 🛠
 - Activity
 - Fragment
 - Viewpager
