@@ -34,16 +34,21 @@ Huawei recruitment process application task.
 
 
 ## Technologies Used 🛠
-- Activity
-- Fragment
-- Viewpager
-- Google Authentication with firebase
-- FaceBook Authentication
-- FloatActionButton
-- SharedPreferences
-- GoogleMaps
-- Data passing with Intent
-- Data passing with Bundle
-- CardView
-- RoundImage
-- Firebase
+
+<li><a href="https://developer.android.com/reference/android/app/Activity">Activity</a></li>
+<li><a href="https://developer.android.com/guide/components/fragments">Fragmentl</a></li>
+<li><a href="https://developer.android.com/training/animation/screen-slide">Viewpager</a></li>
+<li><a href="https://firebase.google.com/docs/auth/android/google-signin">Google Authentication with firebase</a></li>
+<li><a href="https://developers.facebook.com/docs/facebook-login/">FaceBook Authentication</a></li>
+<li><a href="https://material.io/components/buttons-floating-action-button">Float Action Button</a></li>
+<li><a href="https://developer.android.com/reference/android/content/SharedPreferences">Shared Preferences</a></li>
+<li><a href="https://developers.google.com/maps/documentation?hl=tr">Google Maps API</a></li>
+<li><a href="https://developer.android.com/training/basics/fragments/pass-data-between">Data Passing</a></li>
+<li><a href="https://developer.android.com/training/sharing/send">Data passing with Intent</a></li>
+<li><a href="https://developer.android.com/topic/libraries/data-binding">Data Binding</a></li>
+<li><a href="https://developer.android.com/jetpack/androidx/releases/cardview">Card View</a></li>
+<li><a href="https://firebase.google.com/">Firebase</a></li>
+
+
+
+
